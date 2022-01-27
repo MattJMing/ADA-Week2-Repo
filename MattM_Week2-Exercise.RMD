@@ -1,0 +1,130 @@
+---
+title: "Week2 Exercise"
+author: "Matt Ming"
+date: "1/27/2022"
+output: html_document
+---
+
+This week's programming exercise:
+
+Create a new repo on GitHub (can call it "Week2-Exercise" or something similar)
+
+Copy this repo into Rstudio
+
+Create an .Rmd file in Rstudio containing notes and exercises from today's class
+
+Knit the .Rmd file
+
+Commit and push the .Rmd, .html, and .Rproj files to the newly created repo
+
+Share the repo w/ Dr. Di Fiore as a url via canvas and as a contributor on GitHub
+(username is difiore)
+
+# Class notes
+
+## Data structures and getting data into R
+
+### Using libraries
+
+To get some example data, we first downloaded both a .xlsx and .csv file from
+Dr. Di Fiore's ada-2022-datasets repo
+
+We then loaded in several packages
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(data.table)
+```
+
+Note that it is possible that your packages are out of date, in which case you'll
+want to update them using the "packages" tab in Rstudio or just using install.packages()
+
+### Matrices
+
+Matrices are one way to store data
+
+They must contain all one type of data (e.g., all numbers or all characters)
+
+They fill either by col (default) or by row (set byrow=TRUE)
+
+```{r}
+matrix(1:30,nrow = 5,ncol = 6)
+matrix(1:30,nrow = 5,ncol = 6,byrow = TRUE)
+```
+
+Indices in R can be called using [], and different dimensions (such as rows and
+columns in a matrix) can be separated by a comma [n,m]
+
+The result of the index call can be assigned to a variable
+
+Indices can be set as ranges [a:b,c:d]
+
+You can take all of the rows in some column by leaving the row part of the index
+blank [,m] and same for getting all columns of some rows [n,]
+
+```{r}
+m <- matrix(1:30,nrow = 5,ncol = 6)
+i <- m[1,1]
+i
+m[3:4,4:6]
+m[,5]
+m[1:3,]
+```
+
+### Lists and Dataframes
+
+Lists and Dataframes can also store data but these are able to hold multiple types
+of data
+
+In Lists, the rows do not all need to have the same length
+
+```{r}
+s <- c("this", "is", "a", "vector", "of", "strings")
+# this is a vector of character strings
+m <- matrix(data=1:40, nrow=5, ncol=8) # this is a matrix
+b <- FALSE # this is a boolean variable
+l <- list(s, m, b)
+l <- list(string = s,matrix = m,bool = b)
+l
+```
+
+Dataframes are perhaps the most commonly used type of data structure as they are
+basically lists but every vector within the list must have the same number of
+elements, essentially creating tabular data
+
+```{r}
+df <-
+  data.frame(
+    firstName = c("Rick", "Negan", "Dwight", "Maggie", "Michonne"),
+    community = c("Alexandria", "Saviors", "Saviors", "Hiltop", "Alexandria"),
+    sex = c("M", "M", "M", "F", "F"),
+    age = c(42, 40, 33, 28, 31)
+  )
+df
+```
+
+It's crucial to understand dataframes because reading in tables to R will auto-
+matically convert the data to a dataframe
+
+To import data from an external file, can use "read.csv" or "read.delim"
+
+Note that when calling the file, you may need to specify the exact path to that
+file, depending on where the file is saved
+
+```{r}
+df <- read.csv(file = "CPDS-1960-2014-reduced.csv",
+               sep = ",",
+               header = TRUE,
+               stringsAsFactors = FALSE)
+head(df)
+```
+
+Note that the packages tidyverse and readxl have their own functions for reading
+in data from files
+
+In tidyverse, use read_csv()
+
+In readxl, use read_excel()
+
+Both have their own variables so make sure to read the help notes
